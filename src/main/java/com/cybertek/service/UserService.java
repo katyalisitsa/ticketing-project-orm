@@ -1,12 +1,19 @@
 package com.cybertek.service;
 
 import com.cybertek.dto.UserDTO;
+import com.cybertek.entity.User;
 
 import java.util.List;
 
-public interface UserService extends CrudService<UserDTO,String> {
+public interface UserService {
 
-    List<UserDTO> findManagers();
-    List<UserDTO> findEmployees();
+    List<UserDTO> listAllUsers();
 
+    UserDTO findByUserName(String username);
+
+    void save(UserDTO dto);
+
+    UserDTO update(UserDTO dto);
+
+    void delete(String username);
 }
