@@ -4,15 +4,17 @@ import com.cybertek.enums.Gender;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name="users")
+@Table(name = "users")
+@Where(caluse = "is_deleted=false")
 public class User extends BaseEntity {
 
     private String firstName;
@@ -25,8 +27,11 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="role_id")
-    private Role role;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "role_id")
+//    private Role role;
+//
+//    @OneToMany(mappedBy = "assignedManager")
+//    private List<Project> projects = new ArrayList<>();
 
 }
