@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/project")
 public class ProjectController {
 
+
     private ProjectService projectService;
     private UserService userService;
 
@@ -32,24 +33,25 @@ public class ProjectController {
         this.userService = userService;
     }
 
-    @GetMapping("/create")
-    public String createProject(Model model) {
 
-        model.addAttribute("project", new ProjectDTO());
-        model.addAttribute("projects", projectService.listAllProjects());
-        model.addAttribute("managers", userService.findManagers());
+    @GetMapping("/create")
+    public String createProject(Model model){
+
+        model.addAttribute("project",new ProjectDTO());
+        model.addAttribute("projects",projectService.listAllProjects());
+        model.addAttribute("managers",userService.listAllByRole("manager"));
 
         return "/project/create";
     }
-//
-//    @PostMapping("/create")
-//    public String insertProject(ProjectDTO project){
-//        projectService.save(project);
-//        project.setProjectStatus(Status.OPEN);
-//        return "redirect:/project/create";
-//
-//    }
-//
+
+    @PostMapping("/create")
+    public String insertProject(ProjectDTO project){
+        projectService.save(project);
+        project.setProjectStatus(Status.OPEN);
+        return "redirect:/project/create";
+
+    }
+
 //    @GetMapping("/delete/{projectcode}")
 //    public String deleteProject(@PathVariable("projectcode") String projectcode){
 //        projectService.deleteById(projectcode);
