@@ -1,4 +1,32 @@
 package com.cybertek.entity;
 
-public class Project {
+import com.cybertek.enums.Status;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.Where;
+
+import javax.persistence.*;
+import java.time.LocalDate;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@Where(clause = "is_deleted=false")
+@Table(name = "projects")
+public class Project extends BaseEntity {
+
+    private String projectCode;
+    private String projectName;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "manager_id")
+    private User assignedManager;
+
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private Status projectStatus;
+    private String projectDetail;
+
 }
