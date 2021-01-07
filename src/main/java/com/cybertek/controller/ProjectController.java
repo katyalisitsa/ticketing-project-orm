@@ -47,40 +47,44 @@ public class ProjectController {
     @PostMapping("/create")
     public String insertProject(ProjectDTO project){
         projectService.save(project);
-        project.setProjectStatus(Status.OPEN);
         return "redirect:/project/create";
 
     }
 
-//    @GetMapping("/delete/{projectcode}")
-//    public String deleteProject(@PathVariable("projectcode") String projectcode){
-//        projectService.deleteById(projectcode);
-//        return "redirect:/project/create";
-//    }
-//
-//    @GetMapping("/complete/{projectcode}")
-//    public String completeProject(@PathVariable("projectcode") String projectcode){
-//        projectService.complete(projectService.findById(projectcode));
-//        return "redirect:/project/create";
-//    }
-//
-//    @GetMapping("/update/{projectcode}")
-//    public String editProject(@PathVariable("projectcode") String projectcode,Model model){
-//
-//        model.addAttribute("project",projectService.findById(projectcode));
-//        model.addAttribute("projects",projectService.findAll());
-//        model.addAttribute("managers",userService.findManagers());
-//
-//        return "/project/update";
-//    }
-//
-//    @PostMapping("/update/{projectcode}")
-//    public String updateProject(@PathVariable("projectcode") String projectcode,ProjectDTO project,Model model){
-//
-//        projectService.update(project);
-//
-//        return "redirect:/project/create";
-//    }
+    @GetMapping("/delete/{projectcode}")
+    public String deleteProject(@PathVariable("projectcode") String projectcode){
+
+        projectService.delete(projectcode);
+        return "redirect:/project/create";
+    }
+
+
+    @GetMapping("/complete/{projectcode}")
+    public String completeProject(@PathVariable("projectcode") String projectcode){
+        projectService.complete(projectcode);
+        return "redirect:/project/create";
+    }
+
+
+    @GetMapping("/update/{projectcode}")
+    public String editProject(@PathVariable("projectcode") String projectcode,Model model){
+
+        model.addAttribute("project",projectService.getByProjectCode(projectcode));
+        model.addAttribute("projects",projectService.listAllProjects());
+        model.addAttribute("managers",userService.listAllByRole("manager"));
+
+        return "/project/update";
+    }
+
+    @PostMapping("/update/{projectcode}")
+    public String updateProject(@PathVariable("projectcode") String projectcode,ProjectDTO project){
+
+        projectService.update(project);
+
+        return "redirect:/project/create";
+    }
+
+
 //
 //    @GetMapping("/manager/complete")
 //    public String getProjectByManager(Model model){
