@@ -4,7 +4,6 @@ import com.cybertek.dto.TaskDTO;
 import com.cybertek.service.TaskService;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,8 +17,8 @@ public class TaskDtoConverter implements Converter<String, TaskDTO> {
     }
 
     @Override
-    public TaskDTO convert(String s) {
-        Long id = Long.parseLong(s);
+    public TaskDTO convert(String source) {
+        Long id = Long.parseLong(source);
         return taskService.findById(id);
     }
 }

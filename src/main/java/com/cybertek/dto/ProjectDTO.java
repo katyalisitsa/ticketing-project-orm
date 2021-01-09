@@ -16,10 +16,11 @@ import java.time.LocalDate;
 public class ProjectDTO {
 
     private Long id;
-
     private String projectName;
     private String projectCode;
     private UserDTO assignedManager;
+
+
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
@@ -33,13 +34,5 @@ public class ProjectDTO {
     private int completeTaskCounts;
     private int unfinishedTaskCounts;
 
-    public ProjectDTO(String projectName, String projectCode, UserDTO assignedManager, LocalDate startDate, LocalDate endDate, String projectDetail, Status projectStatus) {
-        this.projectName = projectName;
-        this.projectCode = projectCode;
-        this.assignedManager = assignedManager;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.projectDetail = projectDetail;
-        this.projectStatus = projectStatus;
-    }
+
 }
