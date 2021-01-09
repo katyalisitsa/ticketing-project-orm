@@ -1,8 +1,10 @@
 package com.cybertek.implementation;
 
+import com.cybertek.dto.ProjectDTO;
 import com.cybertek.dto.TaskDTO;
 import com.cybertek.entity.Task;
 import com.cybertek.enums.Status;
+import com.cybertek.mapper.ProjectMapper;
 import com.cybertek.mapper.TaskMapper;
 import com.cybertek.repository.TaskRepository;
 import com.cybertek.service.TaskService;
@@ -18,10 +20,12 @@ public class TaskServiceImpl implements TaskService {
 
     TaskRepository taskRepository;
     TaskMapper taskMapper;
+    ProjectMapper projectMapper;
 
-    public TaskServiceImpl(TaskRepository taskRepository, TaskMapper taskMapper) {
+    public TaskServiceImpl(TaskRepository taskRepository, TaskMapper taskMapper, ProjectMapper projectMapper) {
         this.taskRepository = taskRepository;
         this.taskMapper = taskMapper;
+        this.projectMapper = projectMapper;
     }
 
     @Override
@@ -81,5 +85,21 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public int totalCompletedTasks(String projectCode) {
         return taskRepository.totalCompletedTasks(projectCode);
+    }
+
+    @Override
+    void deleteByProject(ProjectDTO project) {
+        List<TaskDTO> taskDTOS = listAllByProject(project);
+        taskDTOS.forEach(taskDTO -> delete(taskDTO.getId()));
+    }
+
+    @Override
+    public List<TaskDTO> listAllByProject(ProjectDTO project) {
+        List<Task> list = taskRepository.findAllByProject(projectMapper.convertToEntity(project));
+
+        return list.stream.map(obj -> {
+            return taskMapper.convertToDto(obj);
+        }).collect(Collectors.toList());
+
     }
 }
