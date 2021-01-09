@@ -26,12 +26,16 @@
 
                             <section class="panel panel-transparent">
                                 <header class="panel-heading">
-                                    <h2 class="panel-title">Project List</h2>
+                                    <h2 class="panel-title">Employee Pending Tasks</h2>
                                 </header>
 
                                 <div class="panel-body">
 
                                     <!-- ------------------------FORM START----------------------------- -->
+                                    <form>
+
+
+                                    </form>
                                     <!-- ------------------------FORM END----------------------------- -->
 
                                 </div>
@@ -45,6 +49,7 @@
                 </div>
 
 
+
                 <!-- ------------------------TABLE START----------------------------- -->
 
                 <div class="row">
@@ -52,38 +57,29 @@
                         <div class="col-md-12">
                             <section class="panel">
                                 <header class="panel-heading">
+                                    <h2 class="panel-title">User List</h2>
                                 </header>
                                 <div class="panel-body">
                                     <div class="table-responsive">
-                                        <table class="table table-striped">
+                                        <table class="table">
                                             <thead>
                                             <tr>
-                                                <th scope="col">Project Code</th>
-                                                <th scope="col">Project Name</th>
-                                                <th scope="col">Start/End Date</th>
-                                                <th scope="col">Manager</th>
-                                                <th scope="col">Unfinished/Completed</th>
+                                                <th scope="col">Project </th>
+                                                <th scope="col">Task Subject</th>
+                                                <th scope="col">Assigned Employee</th>
+                                                <th scope="col">Assigned Date</th>
                                                 <th scope="col">Status</th>
-                                                <th scope="col">Action</th>
+                                                <th scope="col">#Action</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr th:each="project : ${projects}">
-                                                <td th:text="${project.projectCode}"></td>
-                                                <td th:text="${project.projectName}"></td>
-                                                <td th:text="${project.startDate + ' to ' + project.endDate}"></td>
-                                                <td th:text="${project.assignedManager.firstName + ' ' + project.assignedManager.lastName}"></td>
-                                                <td th:text="${project.unfinishedTaskCounts + '/' + project.completeTaskCounts}"></td>
-                                                <td th:text="${project.projectStatus}"></td>
-                                                <td>
-                                                    <a th:if="${project.unfinishedTaskCounts ==0 && project.projectStatus.value != 'Completed'}"
-                                                       class="btn btn-primary btn-sm"
-                                                       th:href="@{/project/manager/complete/{id}(id=${project.projectCode})}">Complete
-                                                    </a>
-                                                    <a th:if="${project.unfinishedTaskCounts > 0 || project.projectStatus.value == 'Completed'}"
-                                                       class="btn btn-primary btn-sm disabled-button">Complete
-                                                    </a>
-                                                </td>
+                                            <tr th:each="task : ${tasks}">
+                                                <td th:text="${task.project.projectCode +'-'+task.project.projectName}" />
+                                                <td th:text="${task.taskSubject}" />
+                                                <td th:text="${task.assignedEmployee.firstName +' '+ task.assignedEmployee.lastName}" />
+                                                <td th:text="${#temporals.format(task.assignedDate, 'MM/dd/yyyy')}" />
+                                                <td th:text="${task.taskStatus}" />
+                                                <td><a class="btn btn-warning rounded-0" th:href="@{/task/employee/edit/{id}(id=${task.id})}">Update</a> </td>
                                             </tr>
                                             </tbody>
                                         </table>

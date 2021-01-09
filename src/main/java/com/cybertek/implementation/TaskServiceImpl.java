@@ -3,10 +3,12 @@ package com.cybertek.implementation;
 import com.cybertek.dto.ProjectDTO;
 import com.cybertek.dto.TaskDTO;
 import com.cybertek.entity.Task;
+import com.cybertek.entity.User;
 import com.cybertek.enums.Status;
 import com.cybertek.mapper.ProjectMapper;
 import com.cybertek.mapper.TaskMapper;
 import com.cybertek.repository.TaskRepository;
+import com.cybertek.repository.UserRepository;
 import com.cybertek.service.TaskService;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +23,13 @@ public class TaskServiceImpl implements TaskService {
     TaskRepository taskRepository;
     TaskMapper taskMapper;
     ProjectMapper projectMapper;
+    UserRepository userRepository;
 
-    public TaskServiceImpl(TaskRepository taskRepository, TaskMapper taskMapper, ProjectMapper projectMapper) {
+    public TaskServiceImpl(TaskRepository taskRepository, TaskMapper taskMapper, ProjectMapper projectMapper, UserRepository userRepository) {
         this.taskRepository = taskRepository;
         this.taskMapper = taskMapper;
         this.projectMapper = projectMapper;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -102,4 +106,13 @@ public class TaskServiceImpl implements TaskService {
         }).collect(Collectors.toList());
 
     }
+
+    @Override
+    List<TaskDTO> listAllTasksByStatusIsNot(Status status) {
+        User user = userRepository.findByUserName("katya.lisitsa@gmail.com");
+        List<Task> list = taskRepository.findTasksByTaskStatusIsNotAndAssignedEmployee(status, user);
+        return list.stream().map(taskMapper::convertToDto).collect(Collectors.toList());
+    }
+
+
 }

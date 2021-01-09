@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -33,18 +34,18 @@ public class TaskController {
     //
 
     @GetMapping("/create")
-    public String createTask(Model model){
+    public String createTask(Model model) {
 
-        model.addAttribute("task",new TaskDTO());
-        model.addAttribute("projects",projectService.listAllProjects());
-        model.addAttribute("employees",userService.listAllByRole("employee"));
-        model.addAttribute("tasks",taskService.listAllTasks());
+        model.addAttribute("task", new TaskDTO());
+        model.addAttribute("projects", projectService.listAllProjects());
+        model.addAttribute("employees", userService.listAllByRole("employee"));
+        model.addAttribute("tasks", taskService.listAllTasks());
 
         return "task/create";
     }
 
     @PostMapping("/create")
-    public String insertTask(Model model,TaskDTO task){
+    public String insertTask(Model model, TaskDTO task) {
 
         taskService.save(task);
 
@@ -52,49 +53,39 @@ public class TaskController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteTask(@PathVariable("id") Long id){
+    public String deleteTask(@PathVariable("id") Long id) {
         taskService.delete(id);
         return "redirect:/task/create";
     }
 
     @GetMapping("/update/{id}")
-    public String editTask(@PathVariable("id") Long id,Model model){
+    public String editTask(@PathVariable("id") Long id, Model model) {
 
-        model.addAttribute("task",taskService.findById(id));
-        model.addAttribute("projects",projectService.listAllProjects());
-        model.addAttribute("employees",userService.listAllByRole("employee"));
-        model.addAttribute("tasks",taskService.listAllTasks());
+        model.addAttribute("task", taskService.findById(id));
+        model.addAttribute("projects", projectService.listAllProjects());
+        model.addAttribute("employees", userService.listAllByRole("employee"));
+        model.addAttribute("tasks", taskService.listAllTasks());
 
         return "task/update";
     }
 
     @PostMapping("/update/{id}")
-    public String updateTask(TaskDTO task){
+    public String updateTask(TaskDTO task) {
 
         taskService.update(task);
 
         return "redirect:/task/create";
 
 
-
     }
 
+    @GetMapping("/employee")
+    public String edit(Model model) {
+        List<TaskDTO> tasks = taskService.listAllTasksByStatusIsNot(Status.COMPLETE);
+        model.addAttribute("tasks", tasks);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return "task/employee-tasks";
+    }
 
 
 }
